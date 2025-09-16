@@ -1,5 +1,7 @@
 package com.example.Banco.Cartao;
 
+import com.example.Banco.ContaCorrente.ContaCorrenteService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -7,13 +9,18 @@ import java.util.*;
 @Service
 public class CartaoService {
 
+    @Autowired
+    private ContaCorrenteService contaCorrenteService;
+
     private HashMap<String, Cartao> cartoes = new HashMap<>();
 
     public Cartao emitirCartao(Cartao cartao){
 
-        if (cartao.getContaCorrente().getNumero() == null) {
+        if (cartao.getNumeroContaCorrente() == null) {
             throw new RuntimeException("Esse número é inválido.");
         }
+
+        contaCorrenteService.adicionarCartao(contaCorrenteService.getConta(cartao.getNumeroContaCorrente()), cartao);
 
         cartoes.put(cartao.getNumeroCartao(), cartao);
         return cartao;

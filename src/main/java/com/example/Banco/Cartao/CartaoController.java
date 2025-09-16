@@ -38,11 +38,6 @@ public class CartaoController {
                          @RequestHeader("Authorization") String token) {
         autenticacaoService.validarToken(token);
 
-        if (cartao.getContaCorrente() != null) {
-            contaCorrenteService.adicionarCartao(contaCorrenteService.getConta(cartao.getContaCorrente().getNumero()), cartao);
-            cartao.setContaCorrente(contaCorrenteService.getConta(cartao.getContaCorrente().getNumero()));
-        }
-
         return cartaoService.emitirCartao(cartao);
     }
 

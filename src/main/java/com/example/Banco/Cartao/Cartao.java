@@ -10,9 +10,7 @@ public class Cartao {
     private String tipo;
     private LocalDate validade = LocalDate.now().plusYears(10);
     private String status = "ATIVO";
-
-    @JsonIgnore
-    private ContaCorrente contaCorrente;
+    private String numeroDaConta;
 
     public boolean isExpired() {
         return validade.isBefore(LocalDate.now());
@@ -54,11 +52,11 @@ public class Cartao {
         return this.status;
     }
 
-    public ContaCorrente getContaCorrente() {
-        return contaCorrente;
+    public String getNumeroContaCorrente() {
+        return this.numeroDaConta;
     }
 
-    public void setContaCorrente(ContaCorrente contaCorrente) {
-        this.contaCorrente = contaCorrente;
+    public void setNumeroDaConta(String numeroDaConta) {
+        this.numeroDaConta = numeroDaConta;
     }
 }
