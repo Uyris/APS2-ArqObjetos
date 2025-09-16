@@ -6,9 +6,14 @@ import java.time.LocalDate;
 
 public class Movimentacao {
     private Float valor;
-    private String tipo;
-    private LocalDate data;
-    private ContaCorrente contaCorrente;
+    private String tipo; // "SAQUE" ou "DEPÓSITO"
+    private LocalDate data = LocalDate.now();
+
+    public Movimentacao(float valor, String saque) {
+        this.valor = valor;
+        this.tipo = saque;
+        this.data = LocalDate.now();
+    }
 
     public Float getValor() {
         return valor;
@@ -32,13 +37,5 @@ public class Movimentacao {
 
     public void setData(LocalDate data) {
         this.data = data;
-    }
-
-    public ContaCorrente getContaCorrente() {
-        return contaCorrente;
-    }
-
-    public void setContaCorrente(ContaCorrente contaCorrente) {
-        this.contaCorrente = contaCorrente;
     }
 }

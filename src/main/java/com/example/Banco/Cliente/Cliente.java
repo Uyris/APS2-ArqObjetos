@@ -5,12 +5,11 @@ import com.example.Banco.ContaCorrente.ContaCorrente;
 import java.time.LocalDate;
 
 public class Cliente {
-
     private String cpf;
     private String nome;
     private LocalDate dataNascimento;
     private Float salario;
-    private ContaCorrente contaCorrente;
+
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
@@ -28,10 +27,6 @@ public class Cliente {
         this.salario = salario;
     }
 
-    public void setContaCorrente(ContaCorrente contaCorrente) {
-        this.contaCorrente = contaCorrente;
-    }
-
     public String getCpf() {
         return cpf;
     }
@@ -43,9 +38,5 @@ public class Cliente {
     }
     public Float getSalario() {
         return salario;
-    }
-    public ContaCorrente getContaCorrente() {
-        return contaCorrente;
-
     }
 }

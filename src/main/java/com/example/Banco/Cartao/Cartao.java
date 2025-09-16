@@ -8,8 +8,15 @@ public class Cartao {
     private String numeroCartao;
     private String tipo;
     private LocalDate validade;
-    private String status;
-    private ContaCorrente contaCorrente;
+    private String status; // "ATIVO" ou "CANCELADO"
+
+    public boolean isExpired() {
+        return validade.isBefore(LocalDate.now());
+    }
+
+    public void cancelaCartao() {
+        this.status = "CANCELADO";
+    }
 
     public void setNumeroCartao(String numeroCartao) {
         this.numeroCartao = numeroCartao;

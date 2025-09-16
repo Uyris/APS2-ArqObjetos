@@ -9,11 +9,11 @@ import java.util.ArrayList;
 public class ContaCorrente {
     private String agencia;
     private String numero;
-    private Float saldo;
+    private Float saldo = 0f;
     private Float limite;
-    private Cliente cliente;
-    private ArrayList<Cartao> cartoes;
-    private ArrayList<Movimentacao> movimentacoes;
+
+    private ArrayList<Movimentacao> movimentacoes = new ArrayList<>();
+    private ArrayList<Cartao> cartoes = new ArrayList<>();
 
     public void setAgencia(String agencia) {
         this.agencia = agencia;
@@ -29,10 +29,6 @@ public class ContaCorrente {
 
     public void setLimite(Float limite) {
         this.limite = limite;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
     }
 
     public void setCartoes(ArrayList<Cartao> cartoes) {
@@ -56,10 +52,6 @@ public class ContaCorrente {
 
     public Float getLimite() {
         return limite;
-    }
-
-    public Cliente getCliente() {
-        return cliente;
     }
 
     public ArrayList<Cartao> getCartoes() {

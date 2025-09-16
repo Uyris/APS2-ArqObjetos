@@ -6,22 +6,25 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping("/auth")
 public class AutenticacaoController {
 
     @Autowired
     private AutenticacaoService autenticacaoService;
 
-    @PostMapping
-    public Usuario cadastrarUsuario(@RequestBody Usuario usuario) {
+    // cadastrar usuário
+    @PostMapping("/usuarios")
+    public Usuario cadastrar(@RequestBody Usuario usuario) {
         return autenticacaoService.cadastrarUsuario(usuario);
     }
 
-    @GetMapping
+    // listar usuários (público)
+    @GetMapping("/usuarios")
     public Collection<Usuario> listarUsuarios() {
         return autenticacaoService.listarUsuarios();
     }
 
+    // login (público)
     @PostMapping("/login")
     public String login(@RequestBody Usuario usuario) {
         return autenticacaoService.login(usuario);
