@@ -42,8 +42,7 @@ public class ClienteController {
                                     @RequestBody Cliente cliente,
                                     @RequestHeader("Authorization") String token) {
         autenticacaoService.validarToken(token);
-        cliente.setCpf(cpf);
-        return clienteService.atualizarCliente(cliente);
+        return clienteService.atualizarCliente(cpf, cliente);
     }
 
     // excluir cliente (precisa de token)

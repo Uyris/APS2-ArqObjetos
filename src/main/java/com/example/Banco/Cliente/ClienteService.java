@@ -23,8 +23,8 @@ public class ClienteService {
         return cliente;
     }
 
-    public Cliente atualizarCliente(Cliente cliente){
-        listaDeClientes.put(cliente.getCpf(), cliente);
+    public Cliente atualizarCliente(String cpf, Cliente cliente){
+        listaDeClientes.put(cpf, cliente);
         return cliente;
     }
 
