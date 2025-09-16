@@ -12,6 +12,8 @@ public class ContaCorrente {
     private Float saldo = 0f;
     private Float limite;
 
+    private Cliente cliente;
+
     private ArrayList<Movimentacao> movimentacoes = new ArrayList<>();
     private ArrayList<Cartao> cartoes = new ArrayList<>();
 
@@ -52,6 +54,14 @@ public class ContaCorrente {
 
     public Float getLimite() {
         return limite;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
     public ArrayList<Cartao> getCartoes() {

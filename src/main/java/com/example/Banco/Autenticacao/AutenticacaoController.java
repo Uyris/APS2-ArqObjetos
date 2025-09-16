@@ -14,7 +14,7 @@ public class AutenticacaoController {
 
     // cadastrar usuário
     @PostMapping("/usuarios")
-    public Usuario cadastrar(@RequestBody Usuario usuario) {
+    public String cadastrar(@RequestBody Usuario usuario) {
         return autenticacaoService.cadastrarUsuario(usuario);
     }
 

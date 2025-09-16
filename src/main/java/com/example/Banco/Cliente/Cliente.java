@@ -1,14 +1,21 @@
 package com.example.Banco.Cliente;
 
 import com.example.Banco.ContaCorrente.ContaCorrente;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.time.LocalDate;
 
 public class Cliente {
     private String cpf;
     private String nome;
+
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate dataNascimento;
     private Float salario;
+
+    @JsonIgnore
+    private ContaCorrente contaCorrente;
 
 
     public void setCpf(String cpf) {
@@ -39,4 +46,13 @@ public class Cliente {
     public Float getSalario() {
         return salario;
     }
+
+    public ContaCorrente getContaCorrente() {
+        return contaCorrente;
+    }
+
+    public void setContaCorrente(ContaCorrente contaCorrente) {
+        this.contaCorrente = contaCorrente;
+    }
+
 }

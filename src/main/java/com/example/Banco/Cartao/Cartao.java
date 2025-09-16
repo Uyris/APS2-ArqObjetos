@@ -1,14 +1,18 @@
 package com.example.Banco.Cartao;
 
 import com.example.Banco.ContaCorrente.ContaCorrente;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.time.LocalDate;
 
 public class Cartao {
     private String numeroCartao;
     private String tipo;
-    private LocalDate validade;
-    private String status; // "ATIVO" ou "CANCELADO"
+    private LocalDate validade = LocalDate.now().plusYears(10);
+    private String status = "ATIVO";
+
+    @JsonIgnore
+    private ContaCorrente contaCorrente;
 
     public boolean isExpired() {
         return validade.isBefore(LocalDate.now());
@@ -50,11 +54,11 @@ public class Cartao {
         return this.status;
     }
 
-    public void setContaCorrente(ContaCorrente contaCorrente) {
-        this.contaCorrente = contaCorrente;
-    }
-
     public ContaCorrente getContaCorrente() {
         return contaCorrente;
+    }
+
+    public void setContaCorrente(ContaCorrente contaCorrente) {
+        this.contaCorrente = contaCorrente;
     }
 }

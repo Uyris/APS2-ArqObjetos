@@ -10,6 +10,11 @@ public class CartaoService {
     private HashMap<String, Cartao> cartoes = new HashMap<>();
 
     public Cartao emitirCartao(Cartao cartao){
+
+        if (cartao.getContaCorrente().getNumero() == null) {
+            throw new RuntimeException("Esse número é inválido.");
+        }
+
         cartoes.put(cartao.getNumeroCartao(), cartao);
         return cartao;
     }

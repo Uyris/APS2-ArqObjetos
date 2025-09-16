@@ -9,6 +9,8 @@ public class Movimentacao {
     private String tipo; // "SAQUE" ou "DEPÓSITO"
     private LocalDate data = LocalDate.now();
 
+    private ContaCorrente contaCorrente;
+
     public Movimentacao(float valor, String saque) {
         this.valor = valor;
         this.tipo = saque;

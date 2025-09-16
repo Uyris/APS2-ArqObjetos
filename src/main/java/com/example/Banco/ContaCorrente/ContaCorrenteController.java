@@ -1,9 +1,12 @@
 package com.example.Banco.ContaCorrente;
 
 import com.example.Banco.Autenticacao.AutenticacaoService;
+import com.example.Banco.Cliente.ClienteService;
 import com.example.Banco.Movimentacao.Movimentacao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collection;
 import java.util.List;
@@ -14,6 +17,9 @@ public class ContaCorrenteController {
 
     @Autowired
     private ContaCorrenteService contaService;
+
+    @Autowired
+    private ClienteService clienteService;
 
     @Autowired
     private AutenticacaoService autenticacaoService;
@@ -34,6 +40,13 @@ public class ContaCorrenteController {
     @PostMapping
     public ContaCorrente criarConta(@RequestBody ContaCorrente conta,
                                     @RequestHeader("Authorization") String token) {
+
+        if (conta.getCliente() == null || conta.getCliente().getCpf() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        conta.setCliente(clienteService.getCliente(conta.getCliente().getCpf()));
+
         autenticacaoService.validarToken(token);
         return contaService.salvarConta(conta);
     }
