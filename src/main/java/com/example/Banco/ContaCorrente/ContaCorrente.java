@@ -28,7 +28,7 @@ public class ContaCorrente {
     @Column(nullable = false)
     private Float limite = 0f;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_cliente", unique = true)
     private Cliente cliente;
 

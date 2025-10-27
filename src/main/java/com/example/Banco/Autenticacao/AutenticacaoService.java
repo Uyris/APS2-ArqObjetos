@@ -25,6 +25,12 @@ public class AutenticacaoService {
         this.authTokenRepository = authTokenRepository;
     }
 
+    @Transactional(readOnly = true)
+    public AuthToken findByTokenEntity(String token) {
+        var maybe = authTokenRepository.findByToken(token);
+        return maybe.orElse(null);
+    }
+
     /**
      * Cadastrar usuário: salva senha hasheada no banco.
      */
