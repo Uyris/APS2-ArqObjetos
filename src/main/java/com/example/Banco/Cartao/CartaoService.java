@@ -1,50 +1,71 @@
 package com.example.Banco.Cartao;
 
+import com.example.Banco.ContaCorrente.ContaCorrente;
 import com.example.Banco.ContaCorrente.ContaCorrenteService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.List;
 
 @Service
 public class CartaoService {
 
-    @Autowired
-    private ContaCorrenteService contaCorrenteService;
+    private final CartaoRepository repo;
+    private final ContaCorrenteService contaService;
 
-    private HashMap<String, Cartao> cartoes = new HashMap<>();
-
-    public Cartao emitirCartao(Cartao cartao){
-
-        if (cartao.getNumeroContaCorrente() == null) {
-            throw new RuntimeException("Esse número é inválido.");
-        }
-
-        contaCorrenteService.adicionarCartao(contaCorrenteService.getConta(cartao.getNumeroContaCorrente()), cartao);
-
-        cartoes.put(cartao.getNumeroCartao(), cartao);
-        return cartao;
+    public CartaoService(CartaoRepository repo, ContaCorrenteService contaService) {
+        this.repo = repo;
+        this.contaService = contaService;
     }
 
-    public Collection<Cartao> listarCartoes() {
-        return cartoes.values();
+    @Transactional
+    public Cartao emitirCartao(Cartao cartao) {
+        if (cartao.getNumeroDaConta() == null || cartao.getNumeroDaConta().isBlank())
+            throw new RuntimeException("Número da conta inválido.");
+
+        ContaCorrente conta = contaService.getConta(cartao.getNumeroDaConta());
+        if (conta == null) throw new RuntimeException("Conta não encontrada.");
+
+        if (repo.existsByNumeroCartao(cartao.getNumeroCartao()))
+            throw new RuntimeException("Já existe cartão com esse número.");
+
+        cartao.setContaCorrente(conta);
+        cartao.setNumeroDaConta(conta.getNumero());
+        Cartao salvo = repo.save(cartao);
+        contaService.adicionarCartao(conta, salvo);
+        return salvo;
     }
 
-    public Cartao buscarPorNumero(String numero){
-        return cartoes.get(numero);
+    @Transactional(readOnly = true)
+    public List<Cartao> listarCartoes() {
+        return repo.findAll();
     }
 
-    public boolean cancelar(String numero){
-        Cartao cartao = cartoes.get(numero);
-        if (cartao != null) {
-            cartao.cancelaCartao();
-            return true;
-        }
-        return false;
+    @Transactional(readOnly = true)
+    public Cartao buscarPorNumero(String numero) {
+        return repo.findByNumeroCartao(numero).orElse(null);
     }
 
-    public boolean estaAtivo(String numero){
-        Cartao cartao = cartoes.get(numero);
-        return cartao != null && !"CANCELADO".equals(cartao.getStatus()) && !cartao.isExpired();
+    @Transactional
+    public boolean cancelar(String numero) {
+        var opt = repo.findByNumeroCartao(numero);
+        if (opt.isEmpty()) return false;
+        Cartao c = opt.get();
+        c.cancelaCartao();
+        repo.save(c);
+        return true;
+    }
+
+    @Transactional(readOnly = true)
+    public boolean estaAtivo(String numero) {
+        var opt = repo.findByNumeroCartao(numero);
+        if (opt.isEmpty()) return false;
+        Cartao c = opt.get();
+        return !"CANCELADO".equals(c.getStatus()) && !c.isExpired();
+    }
+
+    @Transactional
+    public void removerPorNumero(String numero) {
+        repo.deleteByNumeroCartao(numero);
     }
 }
