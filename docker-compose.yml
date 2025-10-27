@@ -1,0 +1,11 @@
+version: "3.9"
+
+services:
+  banco:
+    image: uyris/banco:1.0.0     # sua imagem
+    container_name: banco-api
+    restart: unless-stopped
+    env_file:
+      - .env                     # carrega SPRING_DATASOURCE_* e outras VARS do seu .env
+    ports:
+      - "8080:8080"
