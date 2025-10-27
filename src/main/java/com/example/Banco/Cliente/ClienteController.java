@@ -1,56 +1,46 @@
 package com.example.Banco.Cliente;
 
-import com.example.Banco.Autenticacao.AutenticacaoService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("/clientes")
 public class ClienteController {
 
-    @Autowired
-    private ClienteService clienteService;
+    private final ClienteService service;
 
-    @Autowired
-    private AutenticacaoService autenticacaoService;
+    public ClienteController(ClienteService service) {
+        this.service = service;
+    }
 
-    // listar todos (público)
     @GetMapping
-    public Collection<Cliente> listarClientes() {
-        return clienteService.getClientes();
+    public List<Cliente> listar() {
+        return service.getClientes();
     }
 
-    // buscar cliente por CPF (público)
     @GetMapping("/{cpf}")
-    public Cliente buscarCliente(@PathVariable String cpf) {
-        return clienteService.getCliente(cpf);
+    public ResponseEntity<Cliente> buscar(@PathVariable String cpf) {
+        Cliente c = service.getCliente(cpf);
+        return c != null ? ResponseEntity.ok(c) : ResponseEntity.notFound().build();
     }
 
-    // criar cliente (precisa de token)
     @PostMapping
-    public Cliente salvarCliente(@RequestBody Cliente cliente,
-                                 @RequestHeader("Authorization") String token) {
-        autenticacaoService.validarToken(token);
-        return clienteService.salvarCliente(cliente);
+    public ResponseEntity<Cliente> criar(@RequestBody Cliente cliente) {
+        Cliente salvo = service.salvarCliente(cliente);
+        return ResponseEntity.ok(salvo);
     }
 
-    // atualizar cliente (precisa de token)
     @PutMapping("/{cpf}")
-    public Cliente atualizarCliente(@PathVariable String cpf,
-                                    @RequestBody Cliente cliente,
-                                    @RequestHeader("Authorization") String token) {
-        autenticacaoService.validarToken(token);
-        return clienteService.atualizarCliente(cpf, cliente);
+    public ResponseEntity<Cliente> atualizar(@PathVariable String cpf, @RequestBody Cliente cliente) {
+        Cliente atualizado = service.atualizarCliente(cpf, cliente);
+        return ResponseEntity.ok(atualizado);
     }
 
-    // excluir cliente (precisa de token)
     @DeleteMapping("/{cpf}")
-    public String excluirCliente(@PathVariable String cpf,
-                                 @RequestHeader("Authorization") String token) {
-        autenticacaoService.validarToken(token);
-        clienteService.excluirCliente(cpf);
-        return "Cliente removido com sucesso.";
+    public ResponseEntity<Void> deletar(@PathVariable String cpf) {
+        service.excluirCliente(cpf);
+        return ResponseEntity.noContent().build();
     }
 }

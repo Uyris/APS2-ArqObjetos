@@ -74,6 +74,6 @@ public class ContaCorrenteController {
     // listar movimentações (público)
     @GetMapping("/{numero}/movimentacoes")
     public List<Movimentacao> listarMovimentacoes(@PathVariable String numero) {
-        return contaService.listarMovimentacoes(numero);
+        return contaService.listarMovimentacoes(numero  );
     }
 }
